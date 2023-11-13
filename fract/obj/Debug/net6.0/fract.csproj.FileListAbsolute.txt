@@ -1,0 +1,11 @@
+C:\Users\User\source\repos\fract\fract\bin\Debug\net6.0\fract.deps.json
+C:\Users\User\source\repos\fract\fract\bin\Debug\net6.0\fract.dll
+C:\Users\User\source\repos\fract\fract\bin\Debug\net6.0\fract.pdb
+C:\Users\User\source\repos\fract\fract\obj\Debug\net6.0\fract.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\User\source\repos\fract\fract\obj\Debug\net6.0\fract.AssemblyInfoInputs.cache
+C:\Users\User\source\repos\fract\fract\obj\Debug\net6.0\fract.AssemblyInfo.cs
+C:\Users\User\source\repos\fract\fract\obj\Debug\net6.0\fract.csproj.CoreCompileInputs.cache
+C:\Users\User\source\repos\fract\fract\obj\Debug\net6.0\fract.dll
+C:\Users\User\source\repos\fract\fract\obj\Debug\net6.0\refint\fract.dll
+C:\Users\User\source\repos\fract\fract\obj\Debug\net6.0\fract.pdb
+C:\Users\User\source\repos\fract\fract\obj\Debug\net6.0\ref\fract.dll
