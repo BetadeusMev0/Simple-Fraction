@@ -8,15 +8,15 @@ namespace fract
         public int denominator { get; set; }
         public int integer { get; set; }
 
-        public void RoundOff() 
+        public void RoundOff()
         {
-            var tmp = numerator/denominator;
-            var remains =numerator%denominator;
+            var tmp = numerator / denominator;
+            var remains = numerator % denominator;
             numerator = remains;
             integer += tmp;
         }
 
-        public void RoundOn() 
+        public void RoundOn()
         {
             var tmp = integer * denominator;
             integer = 0;
@@ -33,14 +33,91 @@ namespace fract
         }
 
 
-        public static Fract operator *(Fract fract, int value) 
+        public static Fract operator *(Fract fract, int value)
         {
             return Multiply(fract, new Fract(value, 1));
         }
 
-        public static Fract operator /(Fract fract, int value) 
+        public static Fract operator /(Fract fract, int value)
         {
             return Divide(fract, new Fract(value, 1));
+        }
+        public static Fract operator -(Fract first, Fract second)
+        {
+            return minus(first, second);
+        }
+        public static Fract operator -(Fract fract, int value)
+        {
+
+            return minus(fract, new Fract(value, 1));
+        }
+        public static Fract operator +(Fract fract, int value)
+        {
+
+            return plus(fract, new Fract(value, 1));
+        }
+
+
+        private static Fract BringToDenominator(Fract fract, int NOK)
+        {
+            var tmp = fract;
+            tmp.numerator *= NOK / fract.denominator;
+            tmp.denominator = NOK;
+            return tmp;
+        }
+
+        public static bool operator ==(Fract first, Fract second)
+        {
+            first.RoundOn();
+            second.RoundOn();
+            int NOK = FindCommunismDenominator(first, second);
+            first = BringToDenominator(first, NOK);
+            second = BringToDenominator(second, NOK);
+            return first.numerator == second.numerator;
+        }
+
+        public static bool operator !=(Fract first, Fract second)
+        {
+            return !(first == second);
+        }
+        public static bool operator <=(Fract first, Fract second)
+        {
+            first.RoundOn();
+            second.RoundOn();
+            int NOK = FindCommunismDenominator(first, second);
+            first = BringToDenominator(first, NOK);
+            second = BringToDenominator(second, NOK);
+            return first.numerator <= second.numerator;
+        }
+
+        public static bool operator >=(Fract first, Fract second)
+        {
+            first.RoundOn();
+            second.RoundOn();
+            int NOK = FindCommunismDenominator(first, second);
+            first = BringToDenominator(first, NOK);
+            second = BringToDenominator(second, NOK);
+            return first.numerator >= second.numerator;
+        }
+
+        public static bool operator <(Fract first, Fract second)
+        {
+            first.RoundOn();
+            second.RoundOn();
+            int NOK = FindCommunismDenominator(first, second);
+            first = BringToDenominator(first, NOK);
+            second = BringToDenominator(second, NOK);
+            return first.numerator < second.numerator;
+        }
+
+        public static bool operator >(Fract first, Fract second)
+        {
+            first.RoundOn();
+            second.RoundOn();
+            int NOK = FindCommunismDenominator(first, second);
+            first = BringToDenominator(first, NOK);
+            second = BringToDenominator(second, NOK);
+            return first.numerator >= second.numerator;
         }
 
 
@@ -48,14 +125,32 @@ namespace fract
 
 
 
-        private static Fract plus(Fract first, Fract second) 
+
+
+
+
+
+
+
+
+
+        private static Fract plus(Fract first, Fract second)
         {
             int NOK = FindCommunismDenominator(first, second);
-            first.numerator *= NOK / first.denominator ;
-            second.numerator *= NOK / second.denominator  ;
+            first.numerator *= NOK / first.denominator;
+            second.numerator *= NOK / second.denominator;
             first.denominator = NOK;
             second.denominator = NOK;
             return new Fract(first.numerator + second.numerator, NOK);
+        }
+        private static Fract minus(Fract first, Fract second)
+        {
+            int NOK = FindCommunismDenominator(first, second);
+            first.numerator *= NOK / first.denominator;
+            second.numerator *= NOK / second.denominator;
+            first.denominator = NOK;
+            second.denominator = NOK;
+            return new Fract(first.numerator - second.numerator, NOK);
         }
 
 
@@ -78,7 +173,7 @@ namespace fract
 
 
 
-        private static Fract Multiply(Fract first, Fract second) 
+        private static Fract Multiply(Fract first, Fract second)
         {
             first.RoundOn();
             second.RoundOn();
@@ -88,7 +183,7 @@ namespace fract
             return fract;
         }
 
-        private static Fract Divide(Fract first, Fract second) 
+        private static Fract Divide(Fract first, Fract second)
         {
             first.RoundOn();
             second.RoundOn();
@@ -97,7 +192,7 @@ namespace fract
 
 
 
-        public Fract Simplify() 
+        public Fract Simplify()
         {
             this.RoundOn();
             var smallest = 0;
@@ -108,12 +203,12 @@ namespace fract
 
 
 
-            for (int i = 0; i < smallest+1; i++) 
+            for (int i = 1; i < smallest + 1; i++)
             {
-                if (this.denominator % i == 0 && this.numerator % i == 0) simp = i; break; 
+                if (this.denominator % i == 0 && this.numerator % i == 0) simp = i;
             }
 
-            if (simp != null) 
+            if (simp != null)
             {
                 this.numerator /= simp.Value;
                 this.denominator /= simp.Value;
@@ -122,7 +217,7 @@ namespace fract
             return this;
         }
 
-        private static int FindCommunismDenominator(Fract first, Fract second) 
+        private static int FindCommunismDenominator(Fract first, Fract second)
         {
             int smallest = 0;
 
@@ -135,7 +230,7 @@ namespace fract
             return 0;
         }
 
-        public override string ToString() 
+        public override string ToString()
         {
             string str = this.integer.ToString() + " " + this.numerator + "/" + this.denominator;
             return str;
@@ -143,22 +238,24 @@ namespace fract
 
 
 
-    private double normal_value { 
+        public double normal_value
+        {
             get
             {
-                var tmp = numerator + (denominator * integer); 
-                double res = tmp / denominator;
+                double tmp = numerator + (denominator * integer);
+                double res = tmp / (double)denominator;
                 return res;
-            } }
+            }
+        }
 
-        public static implicit operator string(Fract fract) 
+        public static implicit operator string(Fract fract)
         {
-            string str = fract.integer.ToString() + " " + fract.numerator + "/" + fract.denominator; 
+            string str = fract.integer.ToString() + " " + fract.numerator + "/" + fract.denominator;
             return str;
         }
 
         private Fract() { }
-        public Fract(int numerator, int denominator) 
+        public Fract(int numerator, int denominator)
         {
             this.numerator = numerator;
             this.denominator = denominator;
@@ -166,7 +263,7 @@ namespace fract
         }
         public Fract(int numerator, int determinator, int integer)
         {
-            this.numerator =numerator;
+            this.numerator = numerator;
             this.denominator = denominator;
             this.integer = integer;
         }
@@ -174,7 +271,7 @@ namespace fract
     }
 
 
-    
+
 
 
 
